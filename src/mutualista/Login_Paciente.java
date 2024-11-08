@@ -143,7 +143,9 @@ public class Login_Paciente extends javax.swing.JFrame {
         // TODO add your handling code here:
         String cedula = txt_Cedula.getText();
         String contrasena = txt_Contrasena.getText();
-        //String mensaje = control.validarUsuario(cedula, contrasena);
+        
+        Conexion c = new Conexion();
+        
         
     }//GEN-LAST:event_btn_ingresarActionPerformed
 

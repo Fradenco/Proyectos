@@ -11,12 +11,14 @@ public class Paciente {
     private String rol;
 
     // Constructor completo
-    public Paciente(String ci, String nombreyapellido, String fechadenacimiento, String celular, String correo) {
+    public Paciente(String ci, String nombreyapellido, String fechadenacimiento, String celular, String correo, String contrsena) {
         
         this.ci = ci;
         this.nombreyapellido = nombreyapellido;
+        this.fechadenacimiento = fechadenacimiento;
         this.celular = celular;
         this.correo = correo;
+        this.contrasena = contrasena;
         this.rol = rol;
     }
     
@@ -24,7 +26,7 @@ public class Paciente {
         return id;
     }
     
-    public int setId(){
+    public int setId(int id){
         return id;
     }
     
@@ -40,10 +42,18 @@ public class Paciente {
         return nombreyapellido;
     }
 
-    public void setNombreyApellido(String nombre) {
+    public void setNombreyApellido(String nombreyapellido) {
         this.nombreyapellido = nombreyapellido;
     }
+    
+    public String getFechadeNacimiento() {
+        return fechadenacimiento;
+    }
 
+    public void setFechadeNacimiento(String fechadenacimiento) {
+        this.fechadenacimiento = fechadenacimiento;
+    }
+    
     public String getCelular() {
         return celular;
     }
@@ -64,15 +74,20 @@ public class Paciente {
         return contrasena;
     }
     
-    public void setContrasena(String rol) {
+    public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
-    public String getcontrsena() {
+    
+    public String getContrsena() {
         return contrasena;
     }
     
     public void setRol(String rol) {
         this.rol = rol;
+    }
+    
+    public String getRol() {
+        return rol;
     }
 }
 

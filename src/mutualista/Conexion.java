@@ -22,14 +22,20 @@ public class Conexion {
 
  }
     
-    public void insertar(Paciente p){
-        try {
-            sql = con.createStatement();
-           sql.executeUpdate("INSERT INTO paciente (nombreyapellido, fechadenacimiento, cedula, celular, correo, contrasena) VALUES ('" + p.getNombreyApellido() + "', " + p.get() + ", " + p.getCi() + ", " + p.getCelular() + ", '" + p.getCorreo() + "', '" + p.getContrasena() + "')");
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-    }
-   
+    public void insertar(Paciente p) {
+    String sql = "INSERT INTO paciente (nombreyapellido, fechadenacimiento, cedula, celular, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?)";
     
+    try (PreparedStatement stmt = con.prepareStatement(sql)) {
+        stmt.setString(1, p.getNombreyApellido());
+        stmt.setString(2, p.getFechadeNacimiento()); // Si es java.sql.Date
+        stmt.setString(3, p.getCi());
+        stmt.setString(4, p.getCelular());
+        stmt.setString(5, p.getCorreo());
+        stmt.setString(6, p.getContrasena());
+
+        stmt.executeUpdate();
+    } catch (SQLException ex) {
+        System.out.println("Error al insertar paciente: " + ex.getMessage());
+    }
+}  
 }

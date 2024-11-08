@@ -42,7 +42,6 @@ public class PacienteRegister extends javax.swing.JFrame {
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(800, 500));
 
         PanelBase.setBackground(new java.awt.Color(255, 255, 255));
         PanelBase.setBorder(new javax.swing.border.MatteBorder(null));
@@ -163,6 +162,11 @@ public class PacienteRegister extends javax.swing.JFrame {
 
         txt_contrasena.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         txt_contrasena.setCaretColor(new java.awt.Color(204, 204, 204));
+        txt_contrasena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_contrasenaActionPerformed(evt);
+            }
+        });
         PanelBase.add(txt_contrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 342, 240, 30));
 
         txt_concontrasena.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -220,7 +224,7 @@ public class PacienteRegister extends javax.swing.JFrame {
         String correo = txt_correo.getText();
         String contrasena = txt_contrasena.getText();
         
-        Paciente P = new Paciente(cedula, nombreyapellido, telefono, correo);
+        Paciente P = new Paciente(nombreyapellido, fechadenacimiento, telefono, cedula, correo, contrasena);
         
         Conexion c = new Conexion();
         c.conectar();
@@ -228,6 +232,10 @@ public class PacienteRegister extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_aceptarActionPerformed
+
+    private void txt_contrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_contrasenaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_contrasenaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
