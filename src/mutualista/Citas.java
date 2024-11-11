@@ -1,7 +1,52 @@
 package mutualista;
+
+import javax.swing.*;
+import java.sql.ResultSet;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+
 public class Citas extends javax.swing.JFrame {
     public Citas() {
         initComponents();
+        cargarTabla();
+    }
+    
+    private void cargarTabla(){
+        try{
+            ResultSet rs = DatabaseConnection.getCitas();
+            
+            Vector<Vector<Object>> data = new Vector<>();
+            
+            Vector<String> columnNames = new Vector<>();
+            columnNames.add("Cita Nº");
+            columnNames.add("Fecha y Hora");
+            columnNames.add("Medico");
+            columnNames.add("Area");
+            
+            while (rs.next()) {
+                Vector<Object> row = new Vector<>();
+                row.add(rs.getInt("Cita_numero"));
+                row.add(rs.getString("Fecha_Hora"));
+                row.add(rs.getString("Medico"));
+                row.add(rs.getString("Area"));
+                data.add(row);
+            }
+            
+            DefaultTableModel model = new DefaultTableModel(data, columnNames);
+            
+            tablausuario.setModel(model); //nombre de tabla
+            
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static class TablaPredefinida extends DefaultTableModel{
+
+        public TablaPredefinida(Vector<Vector<Object>> data, Vector<String> columnNames) {
+            super(data, columnNames);
+        }
     }
 
     @SuppressWarnings("unchecked")

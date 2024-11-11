@@ -1,5 +1,10 @@
-
 package mutualista;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+import java.util.Vector;
+
 public class Gestionar_Pacientes extends javax.swing.JFrame {
     public Gestionar_Pacientes() {
         initComponents();

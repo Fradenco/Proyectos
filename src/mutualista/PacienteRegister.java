@@ -218,13 +218,11 @@ public class PacienteRegister extends javax.swing.JFrame {
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         // TODO add your handling code here:
         String nombreyapellido = txt_nombreyapellido.getText();
-        String fechadenacimiento = txt_fechadenacimiento.getText();
         String telefono = txt_telefono.getText();
         String cedula = txt_cedula.getText();
-        String correo = txt_correo.getText();
         String contrasena = txt_contrasena.getText();
         
-        Paciente P = new Paciente(nombreyapellido, fechadenacimiento, telefono, cedula, correo, contrasena);
+        Paciente P = new Paciente(nombreyapellido, telefono, cedula, contrasena);
         
         Conexion c = new Conexion();
         c.conectar();

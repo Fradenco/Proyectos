@@ -23,14 +23,12 @@ public class Conexion {
  }
     
     public void insertar(Paciente p) {
-    String sql = "INSERT INTO paciente (nombreyapellido, fechadenacimiento, cedula, celular, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO paciente (nombreyapellido, cedula, celular, contrasena) VALUES (?, ?, ?, ?)";
     
     try (PreparedStatement stmt = con.prepareStatement(sql)) {
         stmt.setString(1, p.getNombreyApellido());
-        stmt.setString(2, p.getFechadeNacimiento()); // Si es java.sql.Date
         stmt.setString(3, p.getCi());
         stmt.setString(4, p.getCelular());
-        stmt.setString(5, p.getCorreo());
         stmt.setString(6, p.getContrasena());
 
         stmt.executeUpdate();

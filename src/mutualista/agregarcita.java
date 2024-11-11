@@ -1,5 +1,9 @@
-
 package mutualista;
+
+import javax.swing.*;
+import java.sql.ResultSet;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 public class agregarcita extends javax.swing.JFrame {
 
