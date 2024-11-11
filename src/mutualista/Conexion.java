@@ -1,5 +1,10 @@
 package mutualista;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import java.sql.*;
 
 public class Conexion {
@@ -27,11 +32,13 @@ public class Conexion {
     
     try (PreparedStatement stmt = con.prepareStatement(sql)) {
         stmt.setString(1, p.getNombreyApellido());
-        stmt.setString(3, p.getCi());
-        stmt.setString(4, p.getCelular());
-        stmt.setString(6, p.getContrasena());
-
+        stmt.setString(2, p.getCi());
+        stmt.setString(3, p.getCelular());
+        stmt.setString(4, p.getContrasena());
+        
         stmt.executeUpdate();
+            System.out.println("Paciente registrado correctamente.");
+
     } catch (SQLException ex) {
         System.out.println("Error al insertar paciente: " + ex.getMessage());
     }

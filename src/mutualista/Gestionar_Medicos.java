@@ -32,7 +32,6 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         btn_agregar = new javax.swing.JButton();
         bt_edit = new javax.swing.JButton();
-        rtn_borrar = new javax.swing.JButton();
         btn_actualizar = new javax.swing.JButton();
         btn_salir = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -111,13 +110,13 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -130,11 +129,8 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
         bt_edit.setText("Editar horarios");
         jPanel2.add(bt_edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 180, 120, 30));
 
-        rtn_borrar.setText("Borrar horarios");
-        jPanel2.add(rtn_borrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 220, 120, 30));
-
         btn_actualizar.setText("Actualizar tabla");
-        jPanel2.add(btn_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 260, 120, 30));
+        jPanel2.add(btn_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 220, 120, 30));
 
         btn_salir.setText("Salir");
         jPanel2.add(btn_salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 120, 50));
@@ -183,7 +179,6 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel panel;
-    private javax.swing.JButton rtn_borrar;
     private javax.swing.JTable tabagendacitas;
     private javax.swing.JLabel textoagregarcitas;
     private javax.swing.JLabel textoagregarcitas1;

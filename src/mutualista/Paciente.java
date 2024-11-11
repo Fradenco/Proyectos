@@ -1,29 +1,18 @@
 package mutualista;
 public class Paciente {
     
-    private int id;
     private String ci;       
     private String nombreyapellido;
     private String celular;
     private String contrasena;
-    private String rol;
 
     // Constructor completo
-    public Paciente(String ci, String nombreyapellido, String celular, String contrsena) {
+    public Paciente(String ci, String nombreyapellido, String celular, String contrasena) {
         
         this.ci = ci;
         this.nombreyapellido = nombreyapellido;
         this.celular = celular;
         this.contrasena = contrasena;
-        this.rol = rol;
-    }
-    
-    public int getId(){
-        return id;
-    }
-    
-    public int setId(int id){
-        return id;
     }
     
     public String getCi() {
@@ -57,17 +46,4 @@ public class Paciente {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
-    
-    public String getContrsena() {
-        return contrasena;
-    }
-    
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-    
-    public String getRol() {
-        return rol;
-    }
 }
-

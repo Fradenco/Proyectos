@@ -30,9 +30,10 @@ public class Horas_Medicos extends javax.swing.JPanel {
         panel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btn_actualizar = new javax.swing.JButton();
+        btn_salir = new javax.swing.JButton();
         buscar = new javax.swing.JTextField();
+        btn_pendientes = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(800, 500));
@@ -63,25 +64,29 @@ public class Horas_Medicos extends javax.swing.JPanel {
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 650, 310));
 
-        jButton1.setText("jButton1");
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 140, 120, 40));
+        btn_actualizar.setText("Actualizar lista");
+        add(btn_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 140, 120, 40));
 
-        jButton2.setText("Salir");
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 450, 120, 40));
+        btn_salir.setText("Salir");
+        add(btn_salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 450, 120, 40));
 
         buscar.setText("Buscar");
         add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 270, 30));
+
+        btn_pendientes.setText("Citas pendientes");
+        add(btn_pendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 190, 120, 40));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_actualizar;
+    private javax.swing.JButton btn_pendientes;
+    private javax.swing.JButton btn_salir;
     private javax.swing.JTextField buscar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel panel;
     private javax.swing.JLabel textoagregarcitas1;
-    // End of variables declaration                   }//GEN-END:variables
+    // End of variables declaration//GEN-END:variables
 
 }

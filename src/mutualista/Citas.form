@@ -142,7 +142,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="desagendar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Desagendar"/>
           </Properties>

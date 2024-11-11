@@ -1,5 +1,6 @@
 package mutualista;
 
+import java.sql.Connection;
 import javax.swing.*;
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -16,12 +17,14 @@ public class Citas extends javax.swing.JFrame {
             ResultSet rs = DatabaseConnection.getCitas();
             
             Vector<Vector<Object>> data = new Vector<>();
-            
             Vector<String> columnNames = new Vector<>();
             columnNames.add("Cita Nº");
             columnNames.add("Fecha y Hora");
             columnNames.add("Medico");
             columnNames.add("Area");
+            columnNames.add("Cancelar");
+            
+            boolean isFirstRow = true;
             
             while (rs.next()) {
                 Vector<Object> row = new Vector<>();
@@ -29,17 +32,45 @@ public class Citas extends javax.swing.JFrame {
                 row.add(rs.getString("Fecha_Hora"));
                 row.add(rs.getString("Medico"));
                 row.add(rs.getString("Area"));
+                row.add(false);
                 data.add(row);
+                
             }
             
-            DefaultTableModel model = new DefaultTableModel(data, columnNames);
-            
+            DefaultTableModel model = new DefaultTableModel(data, columnNames){
+                @Override
+                public Class<?> getColumnClass(int column) {
+                    if (column == 4) return Boolean.class; // Columna del JCheckBox
+                    return super.getColumnClass(column);
+                }
+                
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    // Lógica para habilitar/deshabilitar el JCheckBox en función de las reglas
+                    boolean esCitaEditable = verificarCitaEditable(row); // Aquí va tu lógica
+                    return column == 4 && esCitaEditable;
+                }
+            };
             tablausuario.setModel(model); //nombre de tabla
+            tablausuario.getColumn("Cancelar").setCellRenderer(new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    JCheckBox checkBox = new JCheckBox();
+                    checkBox.setSelected((Boolean) value);
+                    checkBox.setEnabled(verificarCitaEditable(row));  // Controla si está habilitado
+                    return checkBox;
+                }
+            });
             
             rs.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private boolean verificarCitaEditable(int row) {
+        // Implementa tu lógica para determinar si una cita es editable (ej., próxima cita pendiente)
+        return true;  // Placeholder, ajusta según tus reglas
     }
 
     private static class TablaPredefinida extends DefaultTableModel{
@@ -61,10 +92,9 @@ public class Citas extends javax.swing.JFrame {
         agregarcita = new javax.swing.JButton();
         cerrar = new javax.swing.JButton();
         buscar = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        desagendar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(800, 500));
         setMinimumSize(new java.awt.Dimension(800, 500));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -120,8 +150,8 @@ public class Citas extends javax.swing.JFrame {
         buscar.setText("Buscar");
         jPanel3.add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 270, 30));
 
-        jButton1.setText("Desagendar");
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(635, 450, 100, 40));
+        desagendar.setText("Desagendar");
+        jPanel3.add(desagendar, new org.netbeans.lib.awtextra.AbsoluteConstraints(635, 450, 100, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,18 +183,11 @@ public class Citas extends javax.swing.JFrame {
        
     }//GEN-LAST:event_formWindowOpened
 
-   
-    
-    /**
-     * @param args the command line arguments
-     */
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarcita;
     private javax.swing.JTextField buscar;
     private javax.swing.JButton cerrar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton desagendar;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel panel;
