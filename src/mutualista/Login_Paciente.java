@@ -150,6 +150,7 @@ public class Login_Paciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
     private void registroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroActionPerformed
+        dispose();
         PacienteRegister p = new PacienteRegister();
         p.setVisible(true);
         p.setLocationRelativeTo(null);

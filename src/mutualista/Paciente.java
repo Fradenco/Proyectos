@@ -7,26 +7,26 @@ import javax.swing.JOptionPane;
 
 public class Paciente {
     
-    private String ci;       
+    private String cedula_paciente;       
     private String nombreyapellido;
-    private String celular;
+    private String telefono;
     private String contrasena;
 
     // Constructor completo
-    public Paciente(String ci, String nombreyapellido, String celular, String contrasena) {
+    public Paciente(String cedula_paciente, String nombreyapellido, String telefono, String contrasena) {
         
-        this.ci = ci;
+        this.cedula_paciente = cedula_paciente;
         this.nombreyapellido = nombreyapellido;
-        this.celular = celular;
+        this.telefono = telefono;
         this.contrasena = contrasena;
     }
     
-    public String getCi() {
-        return ci;
+    public String getCedula_paciente() {
+        return cedula_paciente;
     }
     
-    public void setCi(String ci) {
-        this.ci = ci;
+    public void setCedula_paciente(String cedula_paciente) {
+        this.cedula_paciente = cedula_paciente;
     }
 
     public String getNombreyApellido() {
@@ -37,12 +37,12 @@ public class Paciente {
         this.nombreyapellido = nombreyapellido;
     }
     
-    public String getCelular() {
-        return celular;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setCelular(String celular) {
-        this.celular = celular;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getContrasena() {
@@ -53,9 +53,9 @@ public class Paciente {
         this.contrasena = contrasena;
     }
     
-    public boolean registrarPaciente(String nombreyapellido, String telefono, String cedula, String contrasena){
+    public boolean registrarPaciente(String nombreyapellido, String telefono, String cedula_paciente, String contrasena){
         
-        String sql = "INSERT INTO paciente (cedula_paciente, nombreyapellido, telefono, contraseña) values (?, ?, ?, ?)";
+        String sql = "INSERT INTO paciente (nombreyapellido, telefono, cedula_paciente, contrasena) values (?, ?, ?, ?)";
         
         Conexion c = new Conexion();
         c.conectar();
@@ -64,9 +64,9 @@ public class Paciente {
         
         try{
             pst = conectar.prepareStatement(sql);
-            pst.setString(1, cedula);
             pst.setString(2, nombreyapellido);
             pst.setString(3, telefono);
+            pst.setString(1, cedula_paciente);
             pst.setString(4, contrasena);
             
             int i = pst.executeUpdate();

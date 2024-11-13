@@ -1,26 +1,32 @@
 package mutualista;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 public class Administrativo {
     
-    private String ci;       
+    private String cedula_administrativo;       
     private String nombreyapellido;
-    private String celular;
+    private String telefono;
     private String contrasena;
 
     // Constructor completo
-    public Administrativo(String ci, String nombreyapellido, String celular, String contrasena) {
+    public Administrativo(String cedula_administrativo, String nombreyapellido, String telefono, String contrasena) {
         
-        this.ci = ci;
+        this.cedula_administrativo = cedula_administrativo;
         this.nombreyapellido = nombreyapellido;
-        this.celular = celular;
+        this.telefono = telefono;
         this.contrasena = contrasena;
     }
     
-    public String getCi() {
-        return ci;
+    public String getCedula_administrativo() {
+        return cedula_administrativo;
     }
     
-    public void setCi(String ci) {
-        this.ci = ci;
+    public void setCedula_administrativo(String cedula_administrativo) {
+        this.cedula_administrativo = cedula_administrativo;
     }
 
     public String getNombreyApellido() {
@@ -31,12 +37,12 @@ public class Administrativo {
         this.nombreyapellido = nombreyapellido;
     }
     
-    public String getCelular() {
-        return celular;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setCelular(String celular) {
-        this.celular = celular;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getContrasena() {
@@ -45,5 +51,34 @@ public class Administrativo {
     
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+    
+    public boolean registrarAdministrtivo(String nombreyapellido, String telefono, String cedula_administrativo, String contrasena){
+        
+        String sql = "INSERT INTO administrativo (nombreyapellido, telefono, cedula_administrativo, contrasena) values (?, ?, ?, ?)";
+        
+        Conexion c = new Conexion();
+        c.conectar();
+        PreparedStatement pst;
+        Connection conectar = c.con;
+        
+        try{
+            pst = conectar.prepareStatement(sql);
+            pst.setString(2, nombreyapellido);
+            pst.setString(3, telefono);
+            pst.setString(1, cedula_administrativo);
+            pst.setString(4, contrasena);
+            
+            int i = pst.executeUpdate();
+            if(i != 0){
+                JOptionPane.showMessageDialog(null, "Los datos se han guardado");
+                return true;
+            }else{
+                return false;
+            }
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return false;
+        }
     }
 }

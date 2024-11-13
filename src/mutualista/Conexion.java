@@ -38,12 +38,12 @@ public class Conexion {
 
     
     public void insertar(Paciente p) {
-        String sql = "INSERT INTO paciente (nombreyapellido, cedula, celular, contrasena) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO paciente (nombreyapellido, cedula_paciente, telefono, contrasena) VALUES (?, ?, ?, ?)";
     
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, p.getNombreyApellido());
-            stmt.setString(2, p.getCi());
-            stmt.setString(3, p.getCelular());
+            stmt.setString(2, p.getCedula_paciente());
+            stmt.setString(3, p.getTelefono());
             stmt.setString(4, p.getContrasena());
         
             stmt.executeUpdate();

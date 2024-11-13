@@ -125,8 +125,6 @@ public class PacienteRegister extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel10.setText("Confirmar contraseña");
         PanelBase.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 130, 30));
-
-        x_contrasena.setText("Las contraseñas no coinciden");
         PanelBase.add(x_contrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 240, -1));
 
         txt_contrasena.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -143,6 +141,11 @@ public class PacienteRegister extends javax.swing.JFrame {
         PanelBase.add(txt_concontrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 250, 240, 30));
 
         btn_regis_med.setText("Registrarse como Medico");
+        btn_regis_med.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_regis_medActionPerformed(evt);
+            }
+        });
         PanelBase.add(btn_regis_med, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 430, 200, -1));
 
         btn_regis_admin.setText("Registrarse como Administrativo");
@@ -187,23 +190,40 @@ public class PacienteRegister extends javax.swing.JFrame {
 
     private void btn_regis_usuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_regis_usuActionPerformed
         
-        Conexion c = new Conexion();
-        c.conectar();
-        
         String nombreyapellido = txt_nombreyapellido.getText();
         String telefono = txt_telefono.getText();
         String cedula = txt_cedula.getText();
         String contrasena = txt_contrasena.getText();
+        String confirmarContrasena = txt_concontrasena.getText();
         
-        Paciente P = new Paciente(nombreyapellido, telefono, cedula, contrasena);
-        c.insertar(P);
+        // Verificar si las contraseñas coinciden
+        if (!contrasena.equals(confirmarContrasena)) {
+            x_contrasena.setText("Las contraseñas no coinciden");
+        } else {
+            x_contrasena.setText(""); // Limpia el mensaje de error si coinciden
+        
+            Conexion c = new Conexion();
+            c.conectar();
 
-        
+            Paciente P = new Paciente(nombreyapellido, telefono, cedula, contrasena);
+            c.insertar(P);
+            
+            dispose();
+            Login_Paciente login = new Login_Paciente();
+            login.setVisible(true);
+            login.setLocationRelativeTo(null);
+
+            JOptionPane.showMessageDialog(this, "Registro exitoso. Inicie seción");
+        }
     }//GEN-LAST:event_btn_regis_usuActionPerformed
 
     private void txt_contrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_contrasenaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_contrasenaActionPerformed
+
+    private void btn_regis_medActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_regis_medActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_regis_medActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
