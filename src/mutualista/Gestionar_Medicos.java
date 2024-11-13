@@ -133,6 +133,11 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
         jPanel2.add(btn_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 220, 120, 30));
 
         btn_salir.setText("Salir");
+        btn_salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_salirActionPerformed(evt);
+            }
+        });
         jPanel2.add(btn_salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 120, 50));
 
         jButton3.setText("Admin usuarios");
@@ -160,6 +165,10 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btn_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salirActionPerformed
+        dispose();
+    }//GEN-LAST:event_btn_salirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

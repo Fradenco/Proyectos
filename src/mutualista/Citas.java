@@ -4,7 +4,9 @@ import java.sql.Connection;
 import javax.swing.*;
 import java.sql.ResultSet;
 import java.util.Vector;
+import java.awt.Component;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class Citas extends javax.swing.JFrame {
     public Citas() {
@@ -14,7 +16,9 @@ public class Citas extends javax.swing.JFrame {
     
     private void cargarTabla(){
         try{
-            ResultSet rs = DatabaseConnection.getCitas();
+            Conexion conexion = new Conexion();
+            conexion.conectar();
+            ResultSet rs = conexion.getCitas();
             
             Vector<Vector<Object>> data = new Vector<>();
             Vector<String> columnNames = new Vector<>();
@@ -194,6 +198,5 @@ public class Citas extends javax.swing.JFrame {
     private javax.swing.JTable tablausuario;
     private javax.swing.JLabel textocitas;
     // End of variables declaration//GEN-END:variables
-
     
 }

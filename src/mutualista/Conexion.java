@@ -21,26 +21,47 @@ public class Conexion {
             sql = con.createStatement();
             System.out.println("Conectado Correctamente");
 
- } catch (ClassNotFoundException | SQLException e) {
- System.out.println(e);
- }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e);
+        }
 
- }
+    }
+    
+    public ResultSet ejecutarConsulta(String consulta) {
+        try {
+            return sql.executeQuery(consulta);
+        } catch (SQLException ex) {
+            System.out.println("Error al ejecutar consulta: " + ex.getMessage());
+            return null;
+        }
+    }
+
     
     public void insertar(Paciente p) {
-    String sql = "INSERT INTO paciente (nombreyapellido, cedula, celular, contrasena) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO paciente (nombreyapellido, cedula, celular, contrasena) VALUES (?, ?, ?, ?)";
     
-    try (PreparedStatement stmt = con.prepareStatement(sql)) {
-        stmt.setString(1, p.getNombreyApellido());
-        stmt.setString(2, p.getCi());
-        stmt.setString(3, p.getCelular());
-        stmt.setString(4, p.getContrasena());
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, p.getNombreyApellido());
+            stmt.setString(2, p.getCi());
+            stmt.setString(3, p.getCelular());
+            stmt.setString(4, p.getContrasena());
         
-        stmt.executeUpdate();
+            stmt.executeUpdate();
             System.out.println("Paciente registrado correctamente.");
 
-    } catch (SQLException ex) {
-        System.out.println("Error al insertar paciente: " + ex.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al insertar paciente: " + ex.getMessage());
+        }
     }
-}  
+    
+    public ResultSet getCitas() {
+        String consulta = "SELECT * FROM citas"; // Ajusta la consulta según tus necesidades
+        try {
+            return sql.executeQuery(consulta); // Ejecuta la consulta y retorna el ResultSet
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener citas: " + ex.getMessage());
+            return null; // Retorna null en caso de error
+        }
+    }
+
 }

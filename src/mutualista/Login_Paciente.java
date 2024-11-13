@@ -152,6 +152,7 @@ public class Login_Paciente extends javax.swing.JFrame {
     private void registroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroActionPerformed
         PacienteRegister p = new PacienteRegister();
         p.setVisible(true);
+        p.setLocationRelativeTo(null);
     }//GEN-LAST:event_registroActionPerformed
 
     private void txt_CedulaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_CedulaMousePressed
