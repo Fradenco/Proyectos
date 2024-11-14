@@ -11,14 +11,16 @@ public class Medico {
     private String nombreyapellido;
     private String telefono;
     private String contrasena;
+    private String rol;
 
     // Constructor completo
-    public Medico(String cedula_medico, String nombreyapellido, String telefono, String contrasena) {
+    public Medico(String cedula_medico, String nombreyapellido, String telefono, String contrasena, String rol) {
         
         this.cedula_medico = cedula_medico;
         this.nombreyapellido = nombreyapellido;
         this.telefono = telefono;
         this.contrasena = contrasena;
+        this.rol = rol;
     }
     
     public String getCedula_medico() {
@@ -53,9 +55,17 @@ public class Medico {
         this.contrasena = contrasena;
     }
     
-    public boolean registrarMedico(String nombreyapellido, String telefono, String cedula_medico, String contrasena){
+    public String getRol() {
+        return rol;
+    }
+    
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+    
+    public boolean registrarMedico(String nombreyapellido, String telefono, String cedula_medico, String contrasena, String rol){
         
-        String sql = "INSERT INTO medico (nombreyapellido, telefono, cedula_medico, contrasena) values (?, ?, ?, ?)";
+        String sql = "INSERT INTO medico (nombreyapellido, telefono, cedula_medico, contrasena, rol) values (?, ?, ?, ?, ?)";
         
         Conexion c = new Conexion();
         c.conectar();
@@ -68,6 +78,7 @@ public class Medico {
             pst.setString(3, telefono);
             pst.setString(1, cedula_medico);
             pst.setString(4, contrasena);
+            pst.setString(5, rol);
             
             int i = pst.executeUpdate();
             if(i != 0){

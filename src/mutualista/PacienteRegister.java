@@ -1,8 +1,11 @@
 package mutualista;
+
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.swing.JButton;
+
 public class PacienteRegister extends javax.swing.JFrame {
 
     public PacienteRegister() {
@@ -149,6 +152,11 @@ public class PacienteRegister extends javax.swing.JFrame {
         PanelBase.add(btn_regis_med, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 430, 200, -1));
 
         btn_regis_admin.setText("Registrarse como Administrativo");
+        btn_regis_admin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_regis_adminActionPerformed(evt);
+            }
+        });
         PanelBase.add(btn_regis_admin, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 460, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -190,11 +198,12 @@ public class PacienteRegister extends javax.swing.JFrame {
 
     private void btn_regis_usuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_regis_usuActionPerformed
         
+        String cedula = txt_cedula.getText();
         String nombreyapellido = txt_nombreyapellido.getText();
         String telefono = txt_telefono.getText();
-        String cedula = txt_cedula.getText();
         String contrasena = txt_contrasena.getText();
         String confirmarContrasena = txt_concontrasena.getText();
+        String rol = "paciente";
         
         // Verificar si las contraseñas coinciden
         if (!contrasena.equals(confirmarContrasena)) {
@@ -204,8 +213,13 @@ public class PacienteRegister extends javax.swing.JFrame {
         
             Conexion c = new Conexion();
             c.conectar();
+            
+            if (c.esCedulaDuplicada(cedula)) {
+                JOptionPane.showMessageDialog(this, "Error: La cédula ya está registrada.");
+                return; // Termina el proceso si la cédula es duplicada
+            }
 
-            Paciente P = new Paciente(nombreyapellido, telefono, cedula, contrasena);
+            Paciente P = new Paciente(cedula, nombreyapellido, telefono, contrasena, rol);
             c.insertar(P);
             
             dispose();
@@ -222,8 +236,74 @@ public class PacienteRegister extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_contrasenaActionPerformed
 
     private void btn_regis_medActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_regis_medActionPerformed
-        // TODO add your handling code here:
+        
+        String cedula = txt_cedula.getText();
+        String nombreyapellido = txt_nombreyapellido.getText();
+        String telefono = txt_telefono.getText();
+        String contrasena = txt_contrasena.getText();
+        String confirmarContrasena = txt_concontrasena.getText();
+        String rol = "medico";
+        
+        // Verificar si las contraseñas coinciden
+        if (!contrasena.equals(confirmarContrasena)) {
+            x_contrasena.setText("Las contraseñas no coinciden");
+        } else {
+            x_contrasena.setText(""); // Limpia el mensaje de error si coinciden
+        
+            Conexion c = new Conexion();
+            c.conectar();
+            
+            if (c.esCedulaDuplicada(cedula)) {
+                JOptionPane.showMessageDialog(this, "Error: La cédula ya está registrada.");
+                return; // Termina el proceso si la cédula es duplicada
+            }
+
+            Paciente P = new Paciente(cedula, nombreyapellido, telefono, contrasena, rol);
+            c.insertar(P);
+            
+            dispose();
+            Login_Paciente login = new Login_Paciente();
+            login.setVisible(true);
+            login.setLocationRelativeTo(null);
+
+            JOptionPane.showMessageDialog(this, "Registro exitoso. Inicie seción");
+        }
     }//GEN-LAST:event_btn_regis_medActionPerformed
+
+    private void btn_regis_adminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_regis_adminActionPerformed
+        
+        String cedula = txt_cedula.getText();
+        String nombreyapellido = txt_nombreyapellido.getText();
+        String telefono = txt_telefono.getText();
+        String contrasena = txt_contrasena.getText();
+        String confirmarContrasena = txt_concontrasena.getText();
+        String rol = "administrativo";
+        
+        // Verificar si las contraseñas coinciden
+        if (!contrasena.equals(confirmarContrasena)) {
+            x_contrasena.setText("Las contraseñas no coinciden");
+        } else {
+            x_contrasena.setText(""); // Limpia el mensaje de error si coinciden
+        
+            Conexion c = new Conexion();
+            c.conectar();
+            
+            if (c.esCedulaDuplicada(cedula)) {
+                JOptionPane.showMessageDialog(this, "Error: La cédula ya está registrada.");
+                return; // Termina el proceso si la cédula es duplicada
+            }
+
+            Paciente P = new Paciente(cedula, nombreyapellido, telefono, contrasena, rol);
+            c.insertar(P);
+            
+            dispose();
+            Login_Paciente login = new Login_Paciente();
+            login.setVisible(true);
+            login.setLocationRelativeTo(null);
+
+            JOptionPane.showMessageDialog(this, "Registro exitoso. Inicie seción");
+        }
+    }//GEN-LAST:event_btn_regis_adminActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

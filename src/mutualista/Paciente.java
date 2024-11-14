@@ -11,14 +11,16 @@ public class Paciente {
     private String nombreyapellido;
     private String telefono;
     private String contrasena;
+    private String rol;
 
     // Constructor completo
-    public Paciente(String cedula_paciente, String nombreyapellido, String telefono, String contrasena) {
+    public Paciente(String cedula_paciente, String nombreyapellido, String telefono, String contrasena, String rol) {
         
         this.cedula_paciente = cedula_paciente;
         this.nombreyapellido = nombreyapellido;
         this.telefono = telefono;
         this.contrasena = contrasena;
+        this.rol = rol;
     }
     
     public String getCedula_paciente() {
@@ -53,9 +55,17 @@ public class Paciente {
         this.contrasena = contrasena;
     }
     
-    public boolean registrarPaciente(String nombreyapellido, String telefono, String cedula_paciente, String contrasena){
+    public String getRol() {
+        return rol;
+    }
+    
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+    
+    public boolean registrarPaciente(String cedula_paciente, String nombreyapellido, String telefono, String contrasena, String rol){
         
-        String sql = "INSERT INTO paciente (nombreyapellido, telefono, cedula_paciente, contrasena) values (?, ?, ?, ?)";
+        String sql = "INSERT INTO paciente (cedula_paciente, nombreyapellido, telefono, contrasena, rol) values (?, ?, ?, ?, ?)";
         
         Conexion c = new Conexion();
         c.conectar();
@@ -64,10 +74,11 @@ public class Paciente {
         
         try{
             pst = conectar.prepareStatement(sql);
+            pst.setString(1, cedula_paciente);
             pst.setString(2, nombreyapellido);
             pst.setString(3, telefono);
-            pst.setString(1, cedula_paciente);
             pst.setString(4, contrasena);
+            pst.setString(5, rol);
             
             int i = pst.executeUpdate();
             if(i != 0){

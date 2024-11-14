@@ -1,6 +1,7 @@
 package mutualista;
 
 import java.awt.Color;
+import javax.swing.JOptionPane;
 
 public class Login_Paciente extends javax.swing.JFrame {
     public Login_Paciente() {
@@ -33,7 +34,7 @@ public class Login_Paciente extends javax.swing.JFrame {
         PanelBase.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         iniciarsesion.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
-        iniciarsesion.setText("INICIAR SECIÓN");
+        iniciarsesion.setText("INICIAR SESIÓN");
         PanelBase.add(iniciarsesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 380, 60));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/images/cruz small.png"))); // NOI18N
@@ -140,12 +141,32 @@ public class Login_Paciente extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_CedulaActionPerformed
 
     private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
-        // TODO add your handling code here:
         String cedula = txt_Cedula.getText();
-        String contrasena = txt_Contrasena.getText();
-        
-        Conexion c = new Conexion();
-        
+    String contrasena = txt_Contrasena.getText();
+
+    Conexion c = new Conexion();
+    String tipoUsuario = c.iniciarSesion(cedula, contrasena);
+
+    switch (tipoUsuario) {
+        case "paciente":
+            new Citas().setVisible(true); // Abre la interfaz para pacientes
+            this.dispose(); // Cierra la ventana de login actual
+            break;
+            
+        case "medico":
+            new Horas_Medicos().setVisible(true); // Abre la interfaz para médicos
+            this.dispose();
+            break;
+            
+        case "administrativo":
+            new Gestionar_Medicos().setVisible(true); // Abre la interfaz para administrativos
+            this.dispose();
+            break;
+            
+        default:
+            JOptionPane.showMessageDialog(this, "Credenciales incorrectas o usuario no encontrado.");
+            break;
+    }
         
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
