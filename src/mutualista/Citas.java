@@ -107,6 +107,9 @@ public class Citas extends javax.swing.JFrame {
         });
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setMaximumSize(new java.awt.Dimension(800, 500));
+        jPanel3.setMinimumSize(new java.awt.Dimension(800, 500));
+        jPanel3.setPreferredSize(new java.awt.Dimension(800, 500));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textocitas.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
@@ -140,9 +143,9 @@ public class Citas extends javax.swing.JFrame {
                 agregarcitaActionPerformed(evt);
             }
         });
-        jPanel3.add(agregarcita, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 450, -1, -1));
+        jPanel3.add(agregarcita, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 450, -1, -1));
 
-        cerrar.setText("Volver");
+        cerrar.setText("Salir");
         cerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,7 +158,7 @@ public class Citas extends javax.swing.JFrame {
         jPanel3.add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 270, 30));
 
         desagendar.setText("Desagendar");
-        jPanel3.add(desagendar, new org.netbeans.lib.awtextra.AbsoluteConstraints(635, 450, 100, 40));
+        jPanel3.add(desagendar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 450, 100, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -172,7 +175,7 @@ public class Citas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
-        // TODO add your handling code here:
+        
         dispose();
     }//GEN-LAST:event_cerrarActionPerformed
 

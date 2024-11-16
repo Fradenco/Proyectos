@@ -3,8 +3,8 @@ package mutualista;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 
-public class Login_Paciente extends javax.swing.JFrame {
-    public Login_Paciente() {
+public class Login_User extends javax.swing.JFrame {
+    public Login_User() {
         initComponents();
     }
     
@@ -23,7 +23,6 @@ public class Login_Paciente extends javax.swing.JFrame {
         registro = new javax.swing.JButton();
         cansel = new javax.swing.JButton();
         txt_Contrasena = new javax.swing.JPasswordField();
-        txt_Mensaje = new javax.swing.JLabel();
         btn_Limpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -107,9 +106,6 @@ public class Login_Paciente extends javax.swing.JFrame {
         });
         PanelBase.add(txt_Contrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 300, 300, 30));
 
-        txt_Mensaje.setText("Contraseña incorrecta");
-        PanelBase.add(txt_Mensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, 220, -1));
-
         btn_Limpiar.setText("Limpiar");
         btn_Limpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,7 +160,7 @@ public class Login_Paciente extends javax.swing.JFrame {
             break;
             
         default:
-            JOptionPane.showMessageDialog(this, "Credenciales incorrectas o usuario no encontrado.");
+            JOptionPane.showMessageDialog(this, "Credenciales incorrectas, usuario no encontrado.");
             break;
     }
         
@@ -172,7 +168,7 @@ public class Login_Paciente extends javax.swing.JFrame {
 
     private void registroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroActionPerformed
         dispose();
-        PacienteRegister p = new PacienteRegister();
+        UserRegister p = new UserRegister();
         p.setVisible(true);
         p.setLocationRelativeTo(null);
     }//GEN-LAST:event_registroActionPerformed
@@ -203,7 +199,7 @@ public class Login_Paciente extends javax.swing.JFrame {
         
         txt_Cedula.setText("");
         txt_Contrasena.setText("");
-        txt_Mensaje.setText("");
+ 
     }//GEN-LAST:event_btn_LimpiarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -219,7 +215,6 @@ public class Login_Paciente extends javax.swing.JFrame {
     private javax.swing.JLabel textpasswd;
     private javax.swing.JTextField txt_Cedula;
     private javax.swing.JPasswordField txt_Contrasena;
-    private javax.swing.JLabel txt_Mensaje;
     // End of variables declaration//GEN-END:variables
 
 }

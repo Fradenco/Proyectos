@@ -2,7 +2,7 @@ package mutualista;
 public class Main {
     public static void main(String[] args){
         
-        Login_Paciente login = new Login_Paciente();
+        Login_User login = new Login_User();
         login.setVisible(true);
         login.setLocationRelativeTo(null);
     }

@@ -111,7 +111,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btn_pendientes">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Citas pendientes"/>
+        <Property name="text" type="java.lang.String" value="H confirmados"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

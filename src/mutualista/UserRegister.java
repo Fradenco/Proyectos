@@ -6,9 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JButton;
 
-public class PacienteRegister extends javax.swing.JFrame {
+public class UserRegister extends javax.swing.JFrame {
 
-    public PacienteRegister() {
+    public UserRegister() {
         initComponents();
     }
 
@@ -183,7 +183,7 @@ public class PacienteRegister extends javax.swing.JFrame {
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
         dispose();
-        Login_Paciente login = new Login_Paciente();
+        Login_User login = new Login_User();
         login.setVisible(true);
         login.setLocationRelativeTo(null);
     }//GEN-LAST:event_cancelarActionPerformed
@@ -219,11 +219,11 @@ public class PacienteRegister extends javax.swing.JFrame {
                 return; // Termina el proceso si la cédula es duplicada
             }
 
-            Paciente P = new Paciente(cedula, nombreyapellido, telefono, contrasena, rol);
-            c.insertar(P);
+            Paciente p = new Paciente(cedula, nombreyapellido, telefono, contrasena, rol);
+            c.insertarPaciente(p);
             
             dispose();
-            Login_Paciente login = new Login_Paciente();
+            Login_User login = new Login_User();
             login.setVisible(true);
             login.setLocationRelativeTo(null);
 
@@ -258,11 +258,11 @@ public class PacienteRegister extends javax.swing.JFrame {
                 return; // Termina el proceso si la cédula es duplicada
             }
 
-            Paciente P = new Paciente(cedula, nombreyapellido, telefono, contrasena, rol);
-            c.insertar(P);
+            Medico m = new Medico(cedula, nombreyapellido, telefono, contrasena, rol);
+            c.insertarMedico(m);
             
             dispose();
-            Login_Paciente login = new Login_Paciente();
+            Login_User login = new Login_User();
             login.setVisible(true);
             login.setLocationRelativeTo(null);
 
@@ -293,11 +293,11 @@ public class PacienteRegister extends javax.swing.JFrame {
                 return; // Termina el proceso si la cédula es duplicada
             }
 
-            Paciente P = new Paciente(cedula, nombreyapellido, telefono, contrasena, rol);
-            c.insertar(P);
+            Administrativo a = new Administrativo(cedula, nombreyapellido, telefono, contrasena, rol);
+            c.insertarAdministrativo(a);
             
             dispose();
-            Login_Paciente login = new Login_Paciente();
+            Login_User login = new Login_User();
             login.setVisible(true);
             login.setLocationRelativeTo(null);
 

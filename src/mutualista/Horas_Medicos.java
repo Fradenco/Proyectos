@@ -73,7 +73,7 @@ public class Horas_Medicos extends javax.swing.JPanel {
         buscar.setText("Buscar");
         add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 270, 30));
 
-        btn_pendientes.setText("Citas pendientes");
+        btn_pendientes.setText("H confirmados");
         add(btn_pendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 190, 120, 40));
     }// </editor-fold>//GEN-END:initComponents
 
