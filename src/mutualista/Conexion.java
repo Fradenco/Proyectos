@@ -26,7 +26,14 @@ public class Conexion {
         }
 
     }
-    
+    ////////////////////////////////////////////////////////////////////////////
+    public Connection getConexion() {
+        if (con == null) {
+            conectar(); // Llama a conectar() si la conexión aún no está establecida
+        }
+        return con;
+    }
+    ////////////////////////////////////////////////////////////////////////////
     public ResultSet ejecutarConsulta(String consulta) {
         conectar();
         try {
@@ -36,134 +43,110 @@ public class Conexion {
             return null;
         }
     }
-    
-    public Connection getConexion() {
-    if (con == null) {
-        conectar(); // Llama a conectar() si la conexión aún no está establecida
+    ////////////////////////////////////////////////////////////////////////////
+    public void insertarUsuario(String cedula, String nombreyapellido, String telefono, String contrasena, String rol) {
+        String sql = "INSERT INTO usuarios (cedula, nombreyapellido, telefono, contrasena, rol) VALUES (?, ?, ?, ?, ?)";
+        conectar();
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, cedula);
+            stmt.setString(2, nombreyapellido);
+            stmt.setString(3, telefono);
+            stmt.setString(4, contrasena);
+            stmt.setString(5, rol);
+            stmt.executeUpdate();
+            System.out.println("Usuario registrado correctamente.");
+        } catch (SQLException ex) {
+            System.out.println("Error al insertar usuario: " + ex.getMessage());
+        }
     }
-    return con;
-}
-
-
+    ////////////////////////////////////////////////////////////////////////////
     // Método para insertar un nuevo paciente en la base de datos
-    public void insertarPaciente(Paciente p) {
-        conectar(); // Asegura que la conexión esté establecida
-        String sql = "INSERT INTO paciente (nombreyapellido, cedula_paciente, telefono, contrasena) VALUES (?, ?, ?, ?)";
-    
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, p.getNombreyApellido());
-            stmt.setString(2, p.getCedula_paciente());
-            stmt.setString(3, p.getTelefono());
-            stmt.setString(4, p.getContrasena());
-        
-            stmt.executeUpdate();
-            System.out.println("Paciente registrado correctamente.");
-
-        } catch (SQLException ex) {
-            System.out.println("Error al insertar paciente: " + ex.getMessage());
-        }
+    public void insertarPaciente(String cedula) {
+        insertarEnTablaEspecifica("paciente", cedula);
     }
-    
-    // Método para insertar un nuevo administrador en la base de datos
-    public void insertarAdministrativo(Administrativo a) {
-        conectar(); // Asegura que la conexión esté establecida
-        String sql = "INSERT INTO administrativo (nombreyapellido, cedula_administrativo, telefono, contrasena) VALUES (?, ?, ?, ?)";
-    
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, a.getNombreyApellido());
-            stmt.setString(2, a.getCedula_administrativo());
-            stmt.setString(3, a.getTelefono());
-            stmt.setString(4, a.getContrasena());
-        
-            stmt.executeUpdate();
-            System.out.println("Administrador registrado correctamente.");
-
-        } catch (SQLException ex) {
-            System.out.println("Error al insertar Administrador: " + ex.getMessage());
-        }
-    }
-    
+    ////////////////////////////////////////////////////////////////////////////
     // Método para insertar un nuevo medico en la base de datos
-    public void insertarMedico(Medico m) {
-        conectar(); // Asegura que la conexión esté establecida
-        String sql = "INSERT INTO medico (nombreyapellido, cedula_medico, telefono, contrasena) VALUES (?, ?, ?, ?)";
-    
+    public void insertarMedico(String cedula, String especialidad) {
+        String sql = "INSERT INTO medico (cedula, especialidad) VALUES (?, ?)";
+        conectar();
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, m.getNombreyApellido());
-            stmt.setString(2, m.getCedula_medico());
-            stmt.setString(3, m.getTelefono());
-            stmt.setString(4, m.getContrasena());
-        
+            stmt.setString(1, cedula);
+            stmt.setString(2, especialidad);
             stmt.executeUpdate();
             System.out.println("Medico registrado correctamente.");
-
         } catch (SQLException ex) {
             System.out.println("Error al insertar medico: " + ex.getMessage());
         }
     }
-        
-    public boolean esCedulaDuplicada(String cedula) {
-    conectar(); // Asegura que la conexión esté establecida
-    String sql = "SELECT COUNT(*) FROM (" +
-             "SELECT cedula_paciente AS cedula FROM paciente UNION ALL " +
-             "SELECT cedula_administrador AS cedula FROM administrador UNION ALL " +
-             "SELECT cedula_medico AS cedula FROM medico" +
-             ") AS todas_cedulas WHERE cedula = ?";
-    
-    try (PreparedStatement stmt = con.prepareStatement(sql)) {
-        stmt.setString(1, cedula);
-        ResultSet rs = stmt.executeQuery();
-        
-        // Si el resultado es mayor a 0, significa que la cédula ya está registrada
-        if (rs.next() && rs.getInt(1) > 0) {
-            return true;
-        }
-    } catch (SQLException ex) {
-        System.out.println("Error al verificar cédula duplicada: " + ex.getMessage());
+    ////////////////////////////////////////////////////////////////////////////
+    // Método para insertar un nuevo administrador en la base de datos
+    public void insertarAdministrativo(String cedula) {
+        insertarEnTablaEspecifica("administrativo", cedula);
     }
-    return false;
+    ////////////////////////////////////////////////////////////////////////////
+    private void insertarEnTablaEspecifica(String tabla, String cedula) {
+        String sql = "INSERT INTO " + tabla + " (cedula) VALUES (?)";
+        conectar();
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, cedula);
+            stmt.executeUpdate();
+            System.out.println("Registro en tabla " + tabla + " realizado correctamente.");
+        } catch (SQLException ex) {
+            System.out.println("Error al insertar en " + tabla + ": " + ex.getMessage());
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////    
+    // Verifica si una cédula ya está registrada en la tabla usuarios
+    public boolean esCedulaDuplicada(String cedula) {
+        String sql = "SELECT COUNT(*) FROM usuarios WHERE cedula = ?";
+        conectar();
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, cedula);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0; // Retorna true si la cédula ya existe
+        } catch (SQLException ex) {
+            System.out.println("Error al verificar cédula duplicada: " + ex.getMessage());
+            return false;
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////
+    public void registrarUsuario(String cedula, String nombreyapellido, String telefono, String contrasena, String rol, String especialidad) {
+    conectar();
+
+    // Verificar si la cédula ya está registrada
+    if (esCedulaDuplicada(cedula)) {
+        System.out.println("Error: La cédula ya está registrada.");
+        return;
+    }
+
+    // Paso 1: Registrar en la tabla usuarios
+    insertarUsuario(cedula, nombreyapellido, telefono, contrasena, rol);
+
+    // Paso 2: Registrar en la tabla específica según el rol
+    switch (rol) {
+        case "paciente":
+            insertarPaciente(cedula);
+            break;
+        case "medico":
+            if (especialidad != null && !especialidad.isEmpty()) {
+                insertarMedico(cedula, especialidad);
+            } else {
+                System.out.println("Error: La especialidad es obligatoria para un médico.");
+                return;
+            }
+            break;
+        case "administrativo":
+            insertarAdministrativo(cedula);
+            break;
+        default:
+            System.out.println("Error: Rol desconocido.");
+            return;
+    }
+
+    System.out.println(rol.substring(0, 1).toUpperCase() + rol.substring(1) + " registrado correctamente.");
 }
 
-    
-    public void registrarPaciente(Paciente p) {
-        conectar(); // Asegura que la conexión esté establecida
-        // Verifica si la cédula ya está en uso
-        if (esCedulaDuplicada(p.getCedula_paciente())) {
-            System.out.println("Error: La cédula ya está registrada.");
-            return;
-        }
-
-        // Si no está duplicada, procede a insertar el paciente
-        insertarPaciente(p);
-        System.out.println("Paciente registrado correctamente.");
-    }
-    
-    public void registrarAdministrativo(Administrativo a) {
-        conectar(); // Asegura que la conexión esté establecida
-        // Verifica si la cédula ya está en uso
-        if (esCedulaDuplicada(a.getCedula_administrativo())) {
-            System.out.println("Error: La cédula ya está registrada.");
-            return;
-        }
-
-        // Si no está duplicada, procede a insertar el paciente
-        insertarAdministrativo(a);
-        System.out.println("Administrador registrado correctamente.");
-    }
-    
-    public void registrarMedico(Medico m) {
-        conectar(); // Asegura que la conexión esté establecida
-        // Verifica si la cédula ya está en uso
-        if (esCedulaDuplicada(m.getCedula_medico())) {
-            System.out.println("Error: La cédula ya está registrada.");
-            return;
-        }
-
-        // Si no está duplicada, procede a insertar el paciente
-        insertarMedico(m);
-        System.out.println("Medico registrado correctamente.");
-    }
-
+    ////////////////////////////////////////////////////////////////////////////
     // Método para obtener todas las citas de la base de datos
     public ResultSet getCitas() {
         conectar();
@@ -175,55 +158,43 @@ public class Conexion {
             return null; // Retorna null en caso de error
         }
     }
-    
+    ////////////////////////////////////////////////////////////////////////////
     public String iniciarSesion(String cedula, String contrasena) {
-    conectar(); // Asegura que la conexión esté establecida
+        conectar(); // Asegura que la conexión esté establecida
     
-    String sqlPaciente = "SELECT 'paciente' AS tipo FROM paciente WHERE cedula_paciente = ? AND contrasena = ?";
-    String sqlMedico = "SELECT 'medico' AS tipo FROM medico WHERE cedula_medico = ? AND contrasena = ?";
-    String sqlAdministrativo = "SELECT 'administrativo' AS tipo FROM administrativo WHERE cedula_administrativo = ? AND contrasena = ?";
-    
-    try {
-        // Verifica si es un paciente
-        if (verificarUsuario(cedula, contrasena, sqlPaciente)) {
-            return "paciente";
-        }
-        
-        // Verifica si es un médico
-        if (verificarUsuario(cedula, contrasena, sqlMedico)) {
-            return "medico";
-        }
-        
-        // Verifica si es administrativo
-        if (verificarUsuario(cedula, contrasena, sqlAdministrativo)) {
-            return "administrativo";
-        }
-        
-    } catch (SQLException ex) {
-        System.out.println("Error al verificar el inicio de sesión: " + ex.getMessage());
-    }
-    
-    return "invalido"; // Retorna "invalido" si no se encuentra el usuario
-}
-
-// Método auxiliar para verificar el usuario en la base de datos
-private boolean verificarUsuario(String cedula, String contrasena, String sql) throws SQLException {
+        String sql = "SELECT rol FROM usuarios WHERE cedula = ? AND contrasena = ?";
     try (PreparedStatement stmt = con.prepareStatement(sql)) {
         stmt.setString(1, cedula);
         stmt.setString(2, contrasena);
         ResultSet rs = stmt.executeQuery();
-        return rs.next(); // Retorna true si se encontró un resultado
-    }
-}
 
-public void cerrarConexion() {
-    if (con != null) {
-        try {
-            con.close();
-            System.out.println("Conexión cerrada correctamente.");
-        } catch (SQLException e) {
-            System.out.println("Error al cerrar la conexión: " + e.getMessage());
+        if (rs.next()) {
+            return rs.getString("rol"); // Retorna el rol del usuario
+        }
+    } catch (SQLException ex) {
+        System.out.println("Error al verificar el inicio de sesión: " + ex.getMessage());
+    }
+    return "invalido"; // Retorna "invalido" si no se encuentra el usuario
+    }
+    ////////////////////////////////////////////////////////////////////////////
+// Método auxiliar para verificar el usuario en la base de datos
+    private boolean verificarUsuario(String cedula, String contrasena, String sql) throws SQLException {
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, cedula);
+            stmt.setString(2, contrasena);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // Retorna true si se encontró un resultado
         }
     }
-}
+    ////////////////////////////////////////////////////////////////////////////
+    public void cerrarConexion() {
+        if (con != null) {
+           try {
+                con.close();
+                System.out.println("Conexión cerrada correctamente.");
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexión: " + e.getMessage());
+            }
+        }
+    }
 }

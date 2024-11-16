@@ -11,6 +11,45 @@ public class UserRegister extends javax.swing.JFrame {
     public UserRegister() {
         initComponents();
     }
+    
+    private void registrarPaciente(String cedula, String nombreyapellido, String telefono, String contrasena) {
+    Conexion c = new Conexion();
+    c.conectar();
+
+    // Paso 1: Registrar en la tabla usuarios
+    c.insertarUsuario(cedula, nombreyapellido, telefono, contrasena, "paciente");
+
+    // Paso 2: Registrar en la tabla paciente
+    c.insertarPaciente(cedula);
+
+    JOptionPane.showMessageDialog(this, "Paciente registrado correctamente.");
+}
+
+private void registrarMedico(String cedula, String nombreyapellido, String telefono, String contrasena, String especialidad) {
+    Conexion c = new Conexion();
+    c.conectar();
+
+    // Paso 1: Registrar en la tabla usuarios
+    c.insertarUsuario(cedula, nombreyapellido, telefono, contrasena, "medico");
+
+    // Paso 2: Registrar en la tabla medico
+    c.insertarMedico(cedula, especialidad);
+
+    JOptionPane.showMessageDialog(this, "Médico registrado correctamente.");
+}
+
+private void registrarAdministrativo(String cedula, String nombreyapellido, String telefono, String contrasena) {
+    Conexion c = new Conexion();
+    c.conectar();
+
+    // Paso 1: Registrar en la tabla usuarios
+    c.insertarUsuario(cedula, nombreyapellido, telefono, contrasena, "administrativo");
+
+    // Paso 2: Registrar en la tabla administrativo
+    c.insertarAdministrativo(cedula);
+
+    JOptionPane.showMessageDialog(this, "Administrativo registrado correctamente.");
+}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -27,7 +66,6 @@ public class UserRegister extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txt_cedula = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
         Registrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btn_regis_usu = new javax.swing.JButton();
@@ -36,8 +74,6 @@ public class UserRegister extends javax.swing.JFrame {
         x_contrasena = new javax.swing.JLabel();
         txt_contrasena = new javax.swing.JTextField();
         txt_concontrasena = new javax.swing.JTextField();
-        btn_regis_med = new javax.swing.JButton();
-        btn_regis_admin = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -90,14 +126,6 @@ public class UserRegister extends javax.swing.JFrame {
         jLabel8.setText("Contraseña");
         PanelBase.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 130, 30));
 
-        jButton3.setText("Cancelar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        PanelBase.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 620, -1, -1));
-
         Registrar.setText("Registrar");
         Registrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,22 +171,6 @@ public class UserRegister extends javax.swing.JFrame {
         txt_concontrasena.setCaretColor(new java.awt.Color(204, 204, 204));
         PanelBase.add(txt_concontrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 250, 240, 30));
 
-        btn_regis_med.setText("Registrarse como Medico");
-        btn_regis_med.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_regis_medActionPerformed(evt);
-            }
-        });
-        PanelBase.add(btn_regis_med, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 430, 200, -1));
-
-        btn_regis_admin.setText("Registrarse como Administrativo");
-        btn_regis_admin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_regis_adminActionPerformed(evt);
-            }
-        });
-        PanelBase.add(btn_regis_admin, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 460, -1, -1));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -172,10 +184,6 @@ public class UserRegister extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
       // TODO add your handling code here:
@@ -199,122 +207,66 @@ public class UserRegister extends javax.swing.JFrame {
     private void btn_regis_usuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_regis_usuActionPerformed
         
         String cedula = txt_cedula.getText();
-        String nombreyapellido = txt_nombreyapellido.getText();
-        String telefono = txt_telefono.getText();
-        String contrasena = txt_contrasena.getText();
-        String confirmarContrasena = txt_concontrasena.getText();
-        String rol = "paciente";
-        
-        // Verificar si las contraseñas coinciden
-        if (!contrasena.equals(confirmarContrasena)) {
-            x_contrasena.setText("Las contraseñas no coinciden");
-        } else {
-            x_contrasena.setText(""); // Limpia el mensaje de error si coinciden
-        
-            Conexion c = new Conexion();
-            c.conectar();
-            
-            if (c.esCedulaDuplicada(cedula)) {
-                JOptionPane.showMessageDialog(this, "Error: La cédula ya está registrada.");
-                return; // Termina el proceso si la cédula es duplicada
-            }
+    String nombreyapellido = txt_nombreyapellido.getText();
+    String telefono = txt_telefono.getText();
+    String contrasena = txt_contrasena.getText();
+    String confirmarContrasena = txt_concontrasena.getText();
 
-            Paciente p = new Paciente(cedula, nombreyapellido, telefono, contrasena, rol);
-            c.insertarPaciente(p);
-            
-            dispose();
-            Login_User login = new Login_User();
-            login.setVisible(true);
-            login.setLocationRelativeTo(null);
+    // Validar que las contraseñas coincidan
+    if (!contrasena.equals(confirmarContrasena)) {
+        JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.");
+        return;
+    }
 
-            JOptionPane.showMessageDialog(this, "Registro exitoso. Inicie seción");
+    // Validar que todos los campos obligatorios estén llenos
+    if (cedula.isEmpty() || nombreyapellido.isEmpty() || telefono.isEmpty() || contrasena.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe completar todos los campos.");
+        return;
+    }
+
+    // Solicitar el rol
+    String[] roles = {"paciente", "medico", "administrativo"};
+    String rol = (String) JOptionPane.showInputDialog(this, "Seleccione el rol del usuario:", 
+                                                      "Seleccionar Rol", JOptionPane.QUESTION_MESSAGE, 
+                                                      null, roles, roles[0]);
+
+    if (rol == null) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un rol para continuar.");
+        return;
+    }
+
+    // Si es médico, solicitar la especialidad
+    String especialidad = null;
+    if (rol.equals("medico")) {
+        especialidad = JOptionPane.showInputDialog(this, "Ingrese la especialidad del médico:", 
+                                                   "Especialidad", JOptionPane.QUESTION_MESSAGE);
+
+        if (especialidad == null || especialidad.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar una especialidad para continuar.");
+            return;
         }
+    }
+
+    // Registrar al usuario
+    Conexion c = new Conexion();
+    c.registrarUsuario(cedula, nombreyapellido, telefono, contrasena, rol, especialidad);
+
+    JOptionPane.showMessageDialog(this, rol.substring(0, 1).toUpperCase() + rol.substring(1) + 
+                                   " registrado correctamente.");
+    dispose(); // Cerrar la ventana actual después del registro
     }//GEN-LAST:event_btn_regis_usuActionPerformed
 
     private void txt_contrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_contrasenaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_contrasenaActionPerformed
 
-    private void btn_regis_medActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_regis_medActionPerformed
-        
-        String cedula = txt_cedula.getText();
-        String nombreyapellido = txt_nombreyapellido.getText();
-        String telefono = txt_telefono.getText();
-        String contrasena = txt_contrasena.getText();
-        String confirmarContrasena = txt_concontrasena.getText();
-        String rol = "medico";
-        
-        // Verificar si las contraseñas coinciden
-        if (!contrasena.equals(confirmarContrasena)) {
-            x_contrasena.setText("Las contraseñas no coinciden");
-        } else {
-            x_contrasena.setText(""); // Limpia el mensaje de error si coinciden
-        
-            Conexion c = new Conexion();
-            c.conectar();
-            
-            if (c.esCedulaDuplicada(cedula)) {
-                JOptionPane.showMessageDialog(this, "Error: La cédula ya está registrada.");
-                return; // Termina el proceso si la cédula es duplicada
-            }
-
-            Medico m = new Medico(cedula, nombreyapellido, telefono, contrasena, rol);
-            c.insertarMedico(m);
-            
-            dispose();
-            Login_User login = new Login_User();
-            login.setVisible(true);
-            login.setLocationRelativeTo(null);
-
-            JOptionPane.showMessageDialog(this, "Registro exitoso. Inicie seción");
-        }
-    }//GEN-LAST:event_btn_regis_medActionPerformed
-
-    private void btn_regis_adminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_regis_adminActionPerformed
-        
-        String cedula = txt_cedula.getText();
-        String nombreyapellido = txt_nombreyapellido.getText();
-        String telefono = txt_telefono.getText();
-        String contrasena = txt_contrasena.getText();
-        String confirmarContrasena = txt_concontrasena.getText();
-        String rol = "administrativo";
-        
-        // Verificar si las contraseñas coinciden
-        if (!contrasena.equals(confirmarContrasena)) {
-            x_contrasena.setText("Las contraseñas no coinciden");
-        } else {
-            x_contrasena.setText(""); // Limpia el mensaje de error si coinciden
-        
-            Conexion c = new Conexion();
-            c.conectar();
-            
-            if (c.esCedulaDuplicada(cedula)) {
-                JOptionPane.showMessageDialog(this, "Error: La cédula ya está registrada.");
-                return; // Termina el proceso si la cédula es duplicada
-            }
-
-            Administrativo a = new Administrativo(cedula, nombreyapellido, telefono, contrasena, rol);
-            c.insertarAdministrativo(a);
-            
-            dispose();
-            Login_User login = new Login_User();
-            login.setVisible(true);
-            login.setLocationRelativeTo(null);
-
-            JOptionPane.showMessageDialog(this, "Registro exitoso. Inicie seción");
-        }
-    }//GEN-LAST:event_btn_regis_adminActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelBase;
     private javax.swing.JButton Registrar;
-    private javax.swing.JButton btn_regis_admin;
-    private javax.swing.JButton btn_regis_med;
     private javax.swing.JButton btn_regis_usu;
     private javax.swing.JButton cancelar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
