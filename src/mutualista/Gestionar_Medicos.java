@@ -12,22 +12,33 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
     public Gestionar_Medicos() {
         initComponents();
         
-        setTitle("Gestionar Horarios de Médicos");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Crear columnas para los días de la semana
+        String[] columnas = {"Horario", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
+        
+        // Crear horarios (filas)
+        String[][] datos = {
+            {"9:00-9:45", "", "", "", "", ""},
+            {"10:00-10:45", "", "", "", "", ""},
+            {"11:00-11:45", "", "", "", "", ""},
+            {"12:00-12:45", "", "", "", "", ""},
+            {"13:00-13:45", "", "", "", "", ""},
+            {"14:00-14:45", "", "", "", "", ""},
+            {"15:00-15:45", "", "", "", "", ""},
+            {"16:00-16:45", "", "", "", "", ""},
+            {"17:00-17:45", "", "", "", "", ""}
+        };
 
         // Configura el modelo de la tabla
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Día");
-        model.addColumn("Hora");
-        model.addColumn("Disponible");
+        DefaultTableModel model = new DefaultTableModel(datos, columnas);
+        
+        // Configura la tabla con el modelo
+        JTable tableHorarios = new JTable(model);
+        add(new JScrollPane(tableHorarios));
 
         // Llama al método para cargar los horarios
         cargarHorarios(model);
 
-        // Configura la tabla con el modelo
-        tableHorarios = new JTable(model);
-        add(new JScrollPane(tableHorarios));
+        
     }
 
     // Método para cargar los horarios de la base de datos
@@ -35,42 +46,41 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
         Conexion conexion = new Conexion();
         conexion.conectar();
 
-        String sql = "SELECT dia, hora, disponible FROM horarios_medicos WHERE cedula_medico = ?";
+        String sql = "SELECT dia_semana, hora_inicio, hora_fin, disponible FROM horarios_medicos WHERE cedula_medico = ?";
         
         try (PreparedStatement stmt = conexion.getConexion().prepareStatement(sql)) {
             // Suponiendo que tienes la cédula del médico que está gestionando los horarios
-            stmt.setString(1, "1234567890"); // Aquí debes poner la cédula del médico en sesión
+            String cedulaMedico = UsuarioSesion.getCedula(); // Este método debe devolver la cédula del usuario logueado
+            stmt.setString(1, cedulaMedico);
+
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String dia = rs.getString("dia");
-                String hora = rs.getTime("hora").toString();
+                String dia = rs.getString("dia_semana");
+                String horario = rs.getString("hora_inicio") + "-" + rs.getString("hora_fin");
                 boolean disponible = rs.getBoolean("disponible");
-                model.addRow(new Object[]{dia, hora, disponible ? "Disponible" : "Ocupado"});
+                
+                // Actualiza las filas y columnas según el día
+            for (int i = 0; i < model.getRowCount(); i++) {
+                if (model.getValueAt(i, 0).equals(horario)) {
+                    int col = switch (dia) {
+                        case "lunes" -> 1;
+                        case "martes" -> 2;
+                        case "miércoles" -> 3;
+                        case "jueves" -> 4;
+                        case "viernes" -> 5;
+                        default -> -1;
+                    };
+                    if (col > 0) {
+                        model.setValueAt(disponible ? "Disponible" : "Reservado", i, col);
+                    }
+                }
+            }
             }
 
         } catch (SQLException ex) {
             System.out.println("Error al cargar horarios: " + ex.getMessage());
         }
-    }
-
-    public void iniciarResetSemanal() {
-        Timer timer = new Timer();
-        Calendar calendario = Calendar.getInstance();
-
-        // Configura el primer reinicio para el próximo sábado a medianoche
-        calendario.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        calendario.set(Calendar.HOUR_OF_DAY, 0);
-        calendario.set(Calendar.MINUTE, 0);
-        calendario.set(Calendar.SECOND, 0);
-
-        // Programa la tarea para repetirse cada semana
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                resetearHorarios();
-            }
-        }, calendario.getTime(), 7 * 24 * 60 * 60 * 1000); // Repetir cada 7 días
     }
 
     private void resetearHorarios() {
@@ -167,11 +177,14 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(800, 500));
         setMinimumSize(new java.awt.Dimension(800, 500));
         setSize(new java.awt.Dimension(800, 500));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setMaximumSize(new java.awt.Dimension(800, 500));
         jPanel2.setMinimumSize(new java.awt.Dimension(800, 500));
+        jPanel2.setPreferredSize(new java.awt.Dimension(800, 500));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textoagregarcitas1.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
@@ -203,15 +216,15 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
                 bt_editActionPerformed(evt);
             }
         });
-        jPanel2.add(bt_edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 180, 120, 30));
+        jPanel2.add(bt_edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 230, 120, 30));
 
-        btn_actualizar.setText("Actualizar tabla");
+        btn_actualizar.setText("Actualizar");
         btn_actualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_actualizarActionPerformed(evt);
             }
         });
-        jPanel2.add(btn_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 220, 120, 30));
+        jPanel2.add(btn_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 180, 120, 40));
 
         btn_salir.setText("Salir");
         btn_salir.addActionListener(new java.awt.event.ActionListener() {
@@ -241,7 +254,7 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -256,7 +269,9 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_salirActionPerformed
 
     private void bt_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_editActionPerformed
-        // TODO add your handling code here:
+        Editar_Horas_Admin editar = new Editar_Horas_Admin();
+        editar.setVisible(true);
+        editar.setLocationRelativeTo(null);
     }//GEN-LAST:event_bt_editActionPerformed
 
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed

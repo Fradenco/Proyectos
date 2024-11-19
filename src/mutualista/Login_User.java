@@ -145,25 +145,34 @@ public class Login_User extends javax.swing.JFrame {
 
     switch (tipoUsuario) {
         case "paciente":
-            new Citas().setVisible(true); // Abre la interfaz para pacientes
+            Citas citas = new Citas();
+            UsuarioSesion.setCedula(cedula);
+            citas.setVisible(true); // Abre la interfaz para pacientes
+            citas.setLocationRelativeTo(null); // Centra la ventana en la pantalla
             this.dispose(); // Cierra la ventana de login actual
             break;
             
         case "medico":
-            new Horas_Medicos().setVisible(true); // Abre la interfaz para médicos
-            this.dispose();
+            UsuarioSesion.setCedula(cedula); // Guarda la cédula del médico en sesión
+            UsuarioSesion.setRol("medico"); // Guarda el rol
+            Horas_Medicos horasMedicos = new Horas_Medicos();
+            horasMedicos.setVisible(true);  // Muestra el panel de Horas_Medicos
+            horasMedicos.setLocationRelativeTo(null); // Centra la ventana
+            this.dispose(); // Cierra la ventana actual
             break;
             
         case "administrativo":
-            new Gestionar_Medicos().setVisible(true); // Abre la interfaz para administrativos
-            this.dispose();
+            Gestionar_Medicos gestionarMedicos = new Gestionar_Medicos();
+            UsuarioSesion.setCedula(cedula);
+            gestionarMedicos.setVisible(true); // Abre la interfaz para administrativos
+            gestionarMedicos.setLocationRelativeTo(null); // Centra la ventana en la pantalla
+            this.dispose(); // Cierra la ventana de login actual
             break;
             
         default:
             JOptionPane.showMessageDialog(this, "Credenciales incorrectas, usuario no encontrado.");
             break;
-    }
-        
+        }   
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
     private void registroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroActionPerformed
