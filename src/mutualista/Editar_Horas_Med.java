@@ -4,6 +4,12 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.*;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public class Editar_Horas_Med extends javax.swing.JFrame {
     private DefaultTableModel model;
@@ -11,39 +17,63 @@ public class Editar_Horas_Med extends javax.swing.JFrame {
 
     public Editar_Horas_Med() {
         initComponents();
-        setLocationRelativeTo(null); // Centra la ventana
-        configurarTabla();
-        cargarHorarios();
         
-        // Crear columnas para los días de la semana
-        String[] columnas = {"Horario", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
-        
-        // Crear horarios (filas)
-        String[][] datos = {
-            {"9:00-9:45", "", "", "", "", ""},
-            {"10:00-10:45", "", "", "", "", ""},
-            {"11:00-11:45", "", "", "", "", ""},
-            {"12:00-12:45", "", "", "", "", ""},
-            {"13:00-13:45", "", "", "", "", ""},
-            {"14:00-14:45", "", "", "", "", ""},
-            {"15:00-15:45", "", "", "", "", ""},
-            {"16:00-16:45", "", "", "", "", ""},
-            {"17:00-17:45", "", "", "", "", ""}
+         // Configura el layout
+        Object[][] datos = {
+            {"9:00", "9:45", "Disponible", "Disponible", "Disponible", "Disponible", "Disponible"},
+            {"10:00", "10:45", "Disponible", "Disponible", "Disponible", "Disponible", "Disponible"},
+            {"11:00", "11:45", "Disponible", "Disponible", "Disponible", "Disponible", "Disponible"},
+            {"12:00", "12:45", "Disponible", "Disponible", "Disponible", "Disponible", "Disponible"},
+            {"13:00", "13:45", "Disponible", "Disponible", "Disponible", "Disponible", "Disponible"},
+            {"14:00", "14:45", "Disponible", "Disponible", "Disponible", "Disponible", "Disponible"},
+            {"15:00", "15:45", "Disponible", "Disponible", "Disponible", "Disponible", "Disponible"},
+            {"16:00", "16:45", "Disponible", "Disponible", "Disponible", "Disponible", "Disponible"},
+            {"17:00", "17:45", "Disponible", "Disponible", "Disponible", "Disponible", "Disponible"}
         };
 
-        // Configura el modelo de la tabla
-        DefaultTableModel model = new DefaultTableModel(datos, columnas);
-        
-        // Configura la tabla con el modelo
-        JTable tableHorarios = new JTable(model);
-        add(new JScrollPane(tableHorarios), BorderLayout.CENTER);
+        // Nombres de las columnas (horas y días de la semana)
+        String[] columnas = {"Inicio", "Fin", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
+
+        // Configuración del modelo de tabla
+        model = new DefaultTableModel(datos, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Permitir editar solo las columnas de días de la semana
+                return column > 0; 
+            }
+        };
+
+        // Asignar el modelo a la tabla
+        tableHorarios.setModel(model);
+
+        // Configurar las columnas para que usen un JComboBox como editor
+        for (int i = 1; i < tableHorarios.getColumnCount(); i++) {
+            configurarColumnaConComboBox(tableHorarios, tableHorarios.getColumnModel().getColumn(i));
+        }
     }
+    
+    private void configurarColumnaConComboBox(JTable tableHorarios, javax.swing.table.TableColumn columna) {
+    // Crear un JComboBox con las opciones
+    JComboBox<String> comboBox = new JComboBox<>();
+    comboBox.addItem("Disponible");
+    comboBox.addItem("Ocupado");
+    comboBox.addItem("Reservado");
+
+    // Asignar el JComboBox como editor de celda
+    columna.setCellEditor(new DefaultCellEditor(comboBox));
+
+    // Opcional: Configurar el renderizador para mostrar el JComboBox al pasar el mouse
+    DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+    renderer.setToolTipText("Click para cambiar el estado");
+    columna.setCellRenderer(renderer);
+}
+
     
     private void configurarTabla() {
         model = new DefaultTableModel(new String[][]{}, new String[]{"Horario", "Día", "Disponible"});
-        jTable1.setModel(model);
-        jTable1.setDefaultEditor(Object.class, null); // Desactiva edición en las celdas no booleanas
-        jTable1.setDefaultEditor(Boolean.class, jTable1.getDefaultEditor(Boolean.class)); // Editor para booleanos
+        tableHorarios.setModel(model);
+        tableHorarios.setDefaultEditor(Object.class, null); // Desactiva edición en las celdas no booleanas
+        tableHorarios.setDefaultEditor(Boolean.class, tableHorarios.getDefaultEditor(Boolean.class)); // Editor para booleanos
     }
     
     private void cargarHorarios() {
@@ -68,26 +98,48 @@ public class Editar_Horas_Med extends javax.swing.JFrame {
 
     private void guardarCambios() {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mutualista", "root", "")) {
-            String sql = "UPDATE horarios_medicos SET disponible = ? WHERE id_medico = ? AND dia_semana = ? AND hora_inicio = ?";
-            try (PreparedStatement stmt = con.prepareStatement(sql)) {
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    String horario = (String) model.getValueAt(i, 0);
-                    String dia = (String) model.getValueAt(i, 1);
-                    Boolean disponible = (Boolean) model.getValueAt(i, 2);
+        con.setAutoCommit(false); // Desactiva el autocommit
 
-                    stmt.setBoolean(1, disponible);
-                    stmt.setString(2, "medico_actual"); // Cambiar por la cédula del médico logueado
-                    stmt.setString(3, dia);
-                    stmt.setString(4, horario.split("-")[0]); // Hora de inicio
-                    stmt.executeUpdate();
+        String sql = "UPDATE horarios_medicos SET disponible = ? WHERE dia_semana = ? AND hora_inicio = ? AND hora_fin = ? AND id_medico = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String horario = (String) model.getValueAt(i, 0); // Columna de horario
+            for (int j = 1; j < model.getColumnCount(); j++) { // Columnas de días de la semana
+                Object value = model.getValueAt(i, j);
+                boolean disponible;
+
+                if (value instanceof Boolean) {
+                    disponible = (Boolean) value;
+                } else if (value instanceof String) {
+                    disponible = value.equals("Disponible");
+                } else {
+                    disponible = false; // Valor por defecto
                 }
-                JOptionPane.showMessageDialog(this, "Cambios guardados exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cambiosRealizados = false; // Restablece el estado de cambios
+
+                stmt.setString(1, disponible ? "Disponible" : "Ocupado");
+                stmt.setString(2, model.getColumnName(j).toLowerCase()); // Día de la semana
+                stmt.setString(3, horario.split("-")[0].trim()); // Hora de inicio
+                stmt.setString(4, horario.split("-")[1].trim()); // Hora de fin
+                stmt.setString(4, UsuarioSesion.getIdMedico()); // ID del médico
+
+                // Depuración
+                System.out.println("Guardando: disponible = " + disponible + 
+                                   ", dia_semana = " + model.getColumnName(j).toLowerCase() + 
+                                   ", hora_inicio = " + horario.split("-")[0] + 
+                                   ", hora_fin = " + horario.split("-")[1] + 
+                                   ", id_medico = " + UsuarioSesion.getIdMedico());
+
+                stmt.executeUpdate();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al guardar los cambios.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+        con.commit(); // Confirma la transacción
+        JOptionPane.showMessageDialog(this, "Cambios guardados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar los cambios: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
     }
 
 
@@ -99,17 +151,18 @@ public class Editar_Horas_Med extends javax.swing.JFrame {
         textoagregarcitas1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableHorarios = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
-        btn_volver = new javax.swing.JButton();
+        btn_salir = new javax.swing.JButton();
         btn_actualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(800, 500));
         setMinimumSize(new java.awt.Dimension(800, 500));
-        setPreferredSize(new java.awt.Dimension(800, 500));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setMaximumSize(new java.awt.Dimension(800, 500));
+        jPanel1.setMinimumSize(new java.awt.Dimension(800, 500));
+        jPanel1.setPreferredSize(new java.awt.Dimension(800, 500));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textoagregarcitas1.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
@@ -120,7 +173,7 @@ public class Editar_Horas_Med extends javax.swing.JFrame {
         jLabel1.setText("jLabel1");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 130));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableHorarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -131,20 +184,20 @@ public class Editar_Horas_Med extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableHorarios);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 650, 310));
 
         jTextField1.setText("Buscar");
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 270, 30));
 
-        btn_volver.setText("Volver");
-        btn_volver.addActionListener(new java.awt.event.ActionListener() {
+        btn_salir.setText("Salir");
+        btn_salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_volverActionPerformed(evt);
+                btn_salirActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 120, 50));
+        jPanel1.add(btn_salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 120, 50));
 
         btn_actualizar.setText("Actualizar ");
         btn_actualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -168,9 +221,9 @@ public class Editar_Horas_Med extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volverActionPerformed
+    private void btn_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salirActionPerformed
         dispose();
-    }//GEN-LAST:event_btn_volverActionPerformed
+    }//GEN-LAST:event_btn_salirActionPerformed
 
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
          guardarCambios(); // Llama al método para guardar los cambios
@@ -179,12 +232,12 @@ public class Editar_Horas_Med extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_actualizar;
-    private javax.swing.JButton btn_volver;
+    private javax.swing.JButton btn_salir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tableHorarios;
     private javax.swing.JLabel textoagregarcitas1;
     // End of variables declaration//GEN-END:variables
 }

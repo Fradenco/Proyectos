@@ -253,7 +253,10 @@ private void registrarAdministrativo(String cedula, String nombreyapellido, Stri
 
     JOptionPane.showMessageDialog(this, rol.substring(0, 1).toUpperCase() + rol.substring(1) + 
                                    " registrado correctamente.");
-    dispose(); // Cerrar la ventana actual después del registro
+    Login_User login = new Login_User();
+        login.setVisible(true);
+        login.setLocationRelativeTo(null);
+        this.dispose(); // Cerrar la ventana actual después del registro
     }//GEN-LAST:event_btn_regis_usuActionPerformed
 
     private void txt_contrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_contrasenaActionPerformed

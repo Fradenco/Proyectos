@@ -3,6 +3,7 @@ package mutualista;
 public class UsuarioSesion {
     private static String cedula;
     private static String rol;
+    private static String idMedico;
 
     // Métodos para establecer y obtener la cédula
     public static void setCedula(String cedulaLogueada) {
@@ -20,5 +21,13 @@ public class UsuarioSesion {
 
     public static String getRol() {
         return rol;
+    }
+    
+    public static void setIdMedico(String id) {
+        idMedico = id;
+    }
+
+    public static String getIdMedico() {
+        return idMedico;
     }
 }

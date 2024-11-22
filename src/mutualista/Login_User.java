@@ -155,7 +155,7 @@ public class Login_User extends javax.swing.JFrame {
         case "medico":
             UsuarioSesion.setCedula(cedula); // Guarda la cédula del médico en sesión
             UsuarioSesion.setRol("medico"); // Guarda el rol
-            Horas_Medicos horasMedicos = new Horas_Medicos();
+            Editar_Horas_Med horasMedicos = new Editar_Horas_Med();
             horasMedicos.setVisible(true);  // Muestra el panel de Horas_Medicos
             horasMedicos.setLocationRelativeTo(null); // Centra la ventana
             this.dispose(); // Cierra la ventana actual

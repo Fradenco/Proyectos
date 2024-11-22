@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Calendar;
+import mutualista.Editar_Usuario;
+
 
 public class Gestionar_Medicos extends javax.swing.JFrame {
     
@@ -177,7 +179,6 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(800, 500));
         setMinimumSize(new java.awt.Dimension(800, 500));
         setSize(new java.awt.Dimension(800, 500));
 
@@ -234,7 +235,7 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
         });
         jPanel2.add(btn_salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 120, 50));
 
-        btn_admin_usu.setText("Admin usuarios");
+        btn_admin_usu.setText("Admin Usu");
         btn_admin_usu.setActionCommand("Administrar usuarios");
         btn_admin_usu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -279,7 +280,10 @@ public class Gestionar_Medicos extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_actualizarActionPerformed
 
     private void btn_admin_usuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_admin_usuActionPerformed
-        // TODO add your handling code here:
+        Editar_Usuario editar_usu = new Editar_Usuario();
+        editar_usu.setVisible(true);
+        editar_usu.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_btn_admin_usuActionPerformed
 
 

@@ -197,6 +197,7 @@ public class Editar_Horas_Admin extends javax.swing.JFrame {
         btn_volver = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         btn_actualizar = new javax.swing.JButton();
+        btn_reset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 500));
@@ -240,6 +241,9 @@ public class Editar_Horas_Admin extends javax.swing.JFrame {
 
         btn_actualizar.setText("Actualizar ");
         jPanel1.add(btn_actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 180, 120, 40));
+
+        btn_reset.setText("Reset");
+        jPanel1.add(btn_reset, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 230, 120, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -303,6 +307,7 @@ public class Editar_Horas_Admin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_actualizar;
+    private javax.swing.JButton btn_reset;
     private javax.swing.JButton btn_volver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

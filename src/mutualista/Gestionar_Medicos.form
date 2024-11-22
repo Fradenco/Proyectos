@@ -130,9 +130,6 @@
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="ff" red="ff" type="rgb"/>
     </Property>
-    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[800, 500]"/>
-    </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[800, 500]"/>
     </Property>
@@ -283,7 +280,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btn_admin_usu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Admin usuarios"/>
+            <Property name="text" type="java.lang.String" value="Admin Usu"/>
             <Property name="actionCommand" type="java.lang.String" value="Administrar usuarios"/>
           </Properties>
           <Events>

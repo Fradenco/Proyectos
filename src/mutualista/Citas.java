@@ -23,7 +23,8 @@ public class Citas extends javax.swing.JFrame {
             Vector<Vector<Object>> data = new Vector<>();
             Vector<String> columnNames = new Vector<>();
             columnNames.add("Cita Nº");
-            columnNames.add("Fecha y Hora");
+            columnNames.add("Fecha");
+            columnNames.add("Hora");
             columnNames.add("Medico");
             columnNames.add("Area");
             columnNames.add("Cancelar");
@@ -33,7 +34,8 @@ public class Citas extends javax.swing.JFrame {
             while (rs.next()) {
                 Vector<Object> row = new Vector<>();
                 row.add(rs.getInt("Cita_numero"));
-                row.add(rs.getString("Fecha_Hora"));
+                row.add(rs.getString("Fecha"));
+                row.add(rs.getString("Hora"));
                 row.add(rs.getString("Medico"));
                 row.add(rs.getString("Area"));
                 row.add(false);
@@ -158,6 +160,11 @@ public class Citas extends javax.swing.JFrame {
         jPanel3.add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 270, 30));
 
         desagendar.setText("Desagendar");
+        desagendar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                desagendarActionPerformed(evt);
+            }
+        });
         jPanel3.add(desagendar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 450, 100, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -168,14 +175,13 @@ public class Citas extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
-        
         dispose();
     }//GEN-LAST:event_cerrarActionPerformed
 
@@ -183,12 +189,17 @@ public class Citas extends javax.swing.JFrame {
         // TODO add your handling code here:
         agregarcita a = new agregarcita();
         a.setVisible(true);
+        a.setLocationRelativeTo(null);
     }//GEN-LAST:event_agregarcitaActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
        
     }//GEN-LAST:event_formWindowOpened
+
+    private void desagendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desagendarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_desagendarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarcita;
